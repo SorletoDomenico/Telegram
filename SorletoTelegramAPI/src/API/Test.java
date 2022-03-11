@@ -75,4 +75,12 @@ public class Test {
         String content = inRemote.next();
         inRemote.close();
     }
+    
+    private boolean ControllaMessaggio(){  
+        //check Luogo  -> /Luogo
+        
+        
+        
+        return true;  
+    }
 }
