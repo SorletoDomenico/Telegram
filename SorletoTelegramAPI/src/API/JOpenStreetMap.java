@@ -41,6 +41,13 @@ public class JOpenStreetMap {
         public String building;
         public int house_number;
         public String village;
+
+        @Override
+        public String toString() {
+            String s = "Latitudine: " + lat + "longitudine: " + lon + "Nome Luogo: " + amenity + "Via: " + road
+                    + "Città: " + town + "Provincia: " + country + "Regione: " + state;
+            return s;
+        }
     }
 
     public class searchresults {
@@ -58,7 +65,7 @@ public class JOpenStreetMap {
             String s = "";
             if (place.size() > 0) {
                 for (int i = 0; i < place.size(); i++) {
-                    s += place.get(i).toString();
+                    s += place.get(i).toString() + "\n";
                 }
             }
             return s;
