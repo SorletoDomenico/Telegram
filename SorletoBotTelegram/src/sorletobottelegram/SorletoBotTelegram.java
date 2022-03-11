@@ -21,9 +21,12 @@ public class SorletoBotTelegram {
         final String baseUrl = "https://api.telegram.org/bot";
         final String token = "5198086511:AAEbM5tKRttQfpjyDZPmnEIXb0oogTf9Cxk/";
         Test test = new Test();
-        
-        
-        test.sendMessage(452619758, "hello");
+
+        test.sendMessage(452619758, "Ciao");
         test.getUpdates("https://api.telegram.org/bot5198086511:AAEbM5tKRttQfpjyDZPmnEIXb0oogTf9Cxk/getUpdates");
+
+        //https://nominatim.openstreetmap.org/search?q=mariano+comense,+monnet&format=xml&addressdetails=1
+
+        //https://nominatim.openstreetmap.org/search?q=
     }
 }
