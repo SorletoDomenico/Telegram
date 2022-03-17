@@ -78,9 +78,6 @@ public class Test {
     
     private boolean ControllaMessaggio(){  
         //check Luogo  -> /Luogo
-        
-        
-        
         return true;  
     }
 }
