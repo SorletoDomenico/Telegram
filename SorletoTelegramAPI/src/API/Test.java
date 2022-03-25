@@ -19,8 +19,14 @@ import org.json.*;
  * @author Domen
  */
 public class Test {
+    
+    String jsonS;
+    
+    public Test(String jsonS){
+        this.jsonS = jsonS;
+    }
 
-    public ArrayList<Messaggio> getUpdates(String jsonS) throws IOException {
+    public ArrayList<Messaggio> getUpdates() throws IOException {
 
         ArrayList<Messaggio> LMsg = new ArrayList<Messaggio>();
         Messaggio msg;
@@ -43,7 +49,7 @@ public class Test {
             int update_id = messaggio.getInt("update_id");
             int id = vForm.getInt("id");
             boolean is_bot = vForm.getBoolean("is_bot");
-            
+
             String first_name = vForm.getString("first_name");
             String username = vForm.getString("username");
             String language_code = vForm.getString("language_code");
@@ -75,10 +81,11 @@ public class Test {
         String content = inRemote.next();
         inRemote.close();
     }
-    
-    private boolean ControllaMessaggio(){  
+
+    private boolean ControllaMessaggio() {
         //check Luogo  -> /Luogo
         
-        return true;  
+
+        return true;
     }
 }
