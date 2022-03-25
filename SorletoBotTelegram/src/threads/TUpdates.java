@@ -5,10 +5,12 @@
  */
 package threads;
 
+import API.Messaggio;
 import API.Test;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import sorletobottelegram.JDatiCondivisi;
 
 /**
  *
@@ -17,15 +19,20 @@ import java.util.logging.Logger;
 public class TUpdates extends Thread {
 
     private Test t;
+    private JDatiCondivisi dati;
 
-    public TUpdates(Test t) {
+    public TUpdates(Test t, JDatiCondivisi dati) {
         this.t = t;
+        this.dati = dati;
     }
 
     public void run() {
         do {
             try {
-                t.getUpdates();
+                Messaggio m = t.getUpdates();
+                if (m != null) {
+                    dati.getAlM().add(m);
+                }
             } catch (IOException ex) {
                 Logger.getLogger(TUpdates.class.getName()).log(Level.SEVERE, null, ex);
             }

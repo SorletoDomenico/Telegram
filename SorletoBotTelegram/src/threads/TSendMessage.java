@@ -6,6 +6,7 @@
 package threads;
 
 import API.Test;
+import sorletobottelegram.JDatiCondivisi;
 
 /**
  *
@@ -14,8 +15,10 @@ import API.Test;
 public class TSendMessage extends Thread{
 
     private Test t;
+    private JDatiCondivisi dati;
 
-    public TSendMessage(Test t) {
+    public TSendMessage(Test t, JDatiCondivisi dati) {
         this.t = t;
+        this.dati = dati;
     }
 }

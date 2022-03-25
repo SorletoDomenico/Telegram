@@ -137,11 +137,15 @@ public class JGrafica extends javax.swing.JFrame {
                 new JGrafica().setVisible(true);
             }
         });
-        Thread.sleep(1000);
+        //Thread.sleep(1000);
         Test t = new Test("https://api.telegram.org/bot5198086511:AAEbM5tKRttQfpjyDZPmnEIXb0oogTf9Cxk");
-        TUpdates tU = new TUpdates(t);
-        TSendMessage tS = new TSendMessage(t);
-        TCheckMessages tC = new TCheckMessages();
+        JDatiCondivisi dati = new JDatiCondivisi();
+        TUpdates tU = new TUpdates(t, dati);
+        TSendMessage tS = new TSendMessage(t, dati);
+        TCheckMessages tC = new TCheckMessages(t, dati);
+        
+        tU.start();
+        tC.start();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
