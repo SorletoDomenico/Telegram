@@ -15,6 +15,7 @@ import java.util.ArrayList;
 public class JDatiCondivisi {
 
     private ArrayList<Messaggio> alM;
+    private ArrayList<JAd> alAd;
 
     public JDatiCondivisi() {
         alM = new ArrayList<Messaggio>();
@@ -24,6 +25,12 @@ public class JDatiCondivisi {
         synchronized (alM) {
             return alM;
 
+        }
+    }
+
+    public ArrayList<JAd> getAlAd() {
+        synchronized (alAd) {
+            return alAd;
         }
     }
 }
