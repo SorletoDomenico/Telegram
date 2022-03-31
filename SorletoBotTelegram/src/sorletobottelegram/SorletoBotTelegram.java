@@ -28,5 +28,18 @@ public class SorletoBotTelegram {
 //        //https://nominatim.openstreetmap.org/search?q=mariano+comense,+monnet&format=xml&addressdetails=1
 //
 //        //https://nominatim.openstreetmap.org/search?q=
-    }
+Scanner s;
+//Integer input = -1; 
+// do { 
+//s = new Scanner(System.in); 
+//System.out.println("1-Aggiungi");
+        //input = s.nextInt();
+        // switch (input) { 
+//case 1: 
+//addT(); 
+// break; 
+   // }
+//} while (input != 0);
+
+}
 }
