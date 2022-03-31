@@ -15,5 +15,10 @@ public class JAd {
     public Integer distanza;
 
     public JAd(String citta, String text, Integer distanza) {
+        this.citta = citta;
+        this.text = text;
+        this.distanza = distanza;
     }
+
+    
 }

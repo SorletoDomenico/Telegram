@@ -29,6 +29,9 @@ public class CSV {
         }
     }
 
+    public CSV() {
+    }
+
     public void addPersona(JPersona persona) throws IOException {
         synchronized (file) {
             Scanner s = new Scanner(file);
@@ -53,9 +56,9 @@ public class CSV {
             }
         }
     }
-    
-    public ArrayList<String> getAllCitta() throws IOException {
-        ArrayList<String> allCitta = new ArrayList<String>();
+
+    public ArrayList<JPersona> getAllCitta() throws IOException {
+        ArrayList<JPersona> allCitta = new ArrayList<JPersona>();
         synchronized (file) {
             Scanner s = new Scanner(file);
             String line;
@@ -63,7 +66,7 @@ public class CSV {
             do {
                 try {
                     line = s.nextLine();
-                    allCitta.add(line.split(";")[1]);
+                    allCitta.add(new JPersona(Integer.parseInt(line.split(";")[0]), line.split(";")[1]));
                 } catch (Exception e) {
                     line = null;
                 }

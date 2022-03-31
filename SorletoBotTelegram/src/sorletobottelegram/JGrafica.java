@@ -158,6 +158,7 @@ public class JGrafica extends javax.swing.JFrame {
 
         tU.start();
         tC.start();
+        tS.start();
 
     }
 

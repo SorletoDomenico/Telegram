@@ -24,6 +24,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import sorletobottelegram.CSV;
 import sorletobottelegram.JDatiCondivisi;
+import sorletobottelegram.JPersona;
 
 /**
  *
@@ -35,37 +36,26 @@ public class TSendMessage extends Thread {
     private JDatiCondivisi dati;
     private CSV csv;
 
-    public TSendMessage(Test t, JDatiCondivisi dati) {
+    public TSendMessage(Test t, JDatiCondivisi dati) throws IOException {
         this.t = t;
         this.dati = dati;
+        csv = new CSV("listaUtenti.csv");
     }
 
     public void run() {
         do {
             if (dati.getAlAd().size() > 0) {
                 try {
-                    Float latA, lonA;
+                    Double latA, lonA;
                     //coordinate della cittá inserita
-                    Float[] c = getCoordinate(dati.getAlAd().get(0).citta);
+                    Double[] c = getCoordinate(dati.getAlAd().get(0).citta);
                     latA = c[0];
                     lonA = c[1];
                     //coordinate dei file csv
-                    ArrayList<Integer> listaID = getUtentiVicini(latA, lonA);
-
-//                            $lat1 = $row["lat"];
-//                    $lon1 = $row["lng"];
-//                    $lat2 = $_GET["lat"];
-//                    $lon2 = $_GET["lng"];
-//                    if ($lat2 != $lat1 || $lon1 != $lon2) {
-//                        $lat11 = deg2rad($lat1);
-//                        $lon11 = deg2rad($lon1);
-//                        $lat2 = deg2rad($lat2);
-//                        $lon2 = deg2rad($lon2);
-//                        $earthRadius = 6371.01; //Kilometers
-//                        $resultKM = $earthRadius * acos(sin($lat11) * sin($lat2) + cos($lat11) * cos($lat2) * cos($lon11 - $lon2));
-//                    } else if ($lat2 == $lat1 && $lon1 == $lon2) {
-//                        $resultKM = 0;
-//                    }
+                    ArrayList<Integer> listaID = getUtentiVicini(latA, lonA, dati.getAlAd().get(0).distanza);
+                    for(Integer id: listaID){
+                        t.sendMessage(id, dati.getAlAd().get(0).text);
+                    }
                     dati.getAlAd().remove(0);
                 } catch (IOException ex) {
                     Logger.getLogger(TSendMessage.class.getName()).log(Level.SEVERE, null, ex);
@@ -74,20 +64,35 @@ public class TSendMessage extends Thread {
         } while (true);
     }
 
-    private ArrayList<Integer> getUtentiVicini(Float latA, Float lonA) throws IOException {
+    private ArrayList<Integer> getUtentiVicini(Double latA, Double lonA, Integer raggio) throws IOException {
         ArrayList<Integer> id = new ArrayList<Integer>();
-        ArrayList<String> cittas = csv.getAllCitta();
-        Float latB, lonB;
-        for (String citta : cittas) {
-            Float[] c = getCoordinate(citta);
-            latB = c[0];
-            lonB = c[1];
+        ArrayList<JPersona> persone = csv.getAllCitta();
+        Double latB, lonB; //citta inserita da java
+        latA = Math.toRadians(latA);
+        lonA = Math.toRadians(lonA);
+        for (JPersona persona : persone) { //scorro tutte le cittá del file
+            Double[] c = getCoordinate(persona.citta);
+            
+            latB = Math.toRadians(c[0]);
+            lonB = Math.toRadians(c[1]);
+            
+            double dlon = lonB - lonA;
+            double dlat = latB - latA;
+            double a = Math.pow(Math.sin(dlat / 2), 2)
+                    + Math.cos(latA) * Math.cos(latB)
+                    * Math.pow(Math.sin(dlon / 2), 2);
+
+            double ca = 2 * Math.asin(Math.sqrt(a));
+            double ris = ca * 6371;
+            if(ris <= raggio){
+                id.add(persona.chat_id);
+            }
         }
         return id;
     }
 
-    private Float[] getCoordinate(String citta) throws MalformedURLException, IOException {
-        Float[] coordinate = new Float[2];//posizione 0-> latitudine | posizione 1-> longitudine
+    private Double[] getCoordinate(String citta) throws MalformedURLException, IOException {
+        Double[] coordinate = new Double[2];//posizione 0-> latitudine | posizione 1-> longitudine
         URL fileUrl = new URL("https://nominatim.openstreetmap.org/search?q=" + URLEncoder.encode(citta, StandardCharsets.UTF_8) + "&format=xml&addressdetails=1");
         Scanner inRemote = new Scanner(fileUrl.openStream());
         inRemote.useDelimiter("\u001a");
@@ -98,8 +103,8 @@ public class TSendMessage extends Thread {
         if (listPlace.getLength() > 0) {
             Element e = (Element) listPlace.item(0);
             if (e.hasAttribute("lat") && e.hasAttribute("lon")) {
-                coordinate[0] = Float.parseFloat(e.getAttribute("lat"));
-                coordinate[1] = Float.parseFloat(e.getAttribute("lon"));
+                coordinate[0] = Double.parseDouble(e.getAttribute("lat"));
+                coordinate[1] = Double.parseDouble(e.getAttribute("lon"));
             } else {
                 coordinate = null;
             }

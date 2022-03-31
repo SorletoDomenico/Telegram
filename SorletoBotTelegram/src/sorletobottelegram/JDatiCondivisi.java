@@ -19,6 +19,7 @@ public class JDatiCondivisi {
 
     public JDatiCondivisi() {
         alM = new ArrayList<Messaggio>();
+        alAd = new ArrayList<JAd>();
     }
 
     public ArrayList<Messaggio> getAlM() {
