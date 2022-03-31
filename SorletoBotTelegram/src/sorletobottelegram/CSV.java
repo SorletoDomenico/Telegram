@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -29,26 +30,46 @@ public class CSV {
     }
 
     public void addPersona(JPersona persona) throws IOException {
-        Scanner s = new Scanner(file);
-        String line;
-        boolean uguale = false;
-        do {
-            try {
-                line = s.nextLine();
-                if (line.split(";")[0].equals(persona.chat_id)) {
-                    uguale = true;
+        synchronized (file) {
+            Scanner s = new Scanner(file);
+            String line;
+            boolean uguale = false;
+            do {
+                try {
+                    line = s.nextLine();
+                    if (line.split(";")[0].equals(persona.chat_id)) {
+                        uguale = true;
+                    }
+                } catch (Exception e) {
+                    line = null;
                 }
-            } catch (Exception e) {
-                line = null;
-            }
 
-        } while (line != null);
-        if (!uguale) {
-            FileWriter fW = new FileWriter(file, true);
-            fW.append(persona.toString() + "\n");
-            fW.flush();
-            fW.close();
+            } while (line != null);
+            if (!uguale) {
+                FileWriter fW = new FileWriter(file, true);
+                fW.append(persona.toString() + "\n");
+                fW.flush();
+                fW.close();
+            }
         }
+    }
+    
+    public ArrayList<String> getAllCitta() throws IOException {
+        ArrayList<String> allCitta = new ArrayList<String>();
+        synchronized (file) {
+            Scanner s = new Scanner(file);
+            String line;
+            boolean uguale = false;
+            do {
+                try {
+                    line = s.nextLine();
+                    allCitta.add(line.split(";")[1]);
+                } catch (Exception e) {
+                    line = null;
+                }
+            } while (line != null);
+        }
+        return allCitta;
     }
 
 }
