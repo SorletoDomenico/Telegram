@@ -42,6 +42,7 @@ public class Test {
         JSONObject obj = new JSONObject(jsonString);
         JSONArray v = obj.getJSONArray("result"); // notice that `"posts": [...]`
         int update_last_message;
+        //citta[] c = new Gson().fromJson(content, citta[].class);
         try {
             update_last_message = v.getJSONObject(v.length() - 1).getInt("update_id");
         } catch (Exception e) {
